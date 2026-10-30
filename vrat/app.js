@@ -290,8 +290,12 @@ async function submitLead(){ const nm=$('#nm').value.trim(), ph=$('#ph').value.t
   if(!nm||!ph){ $('#sendMsg').textContent='Upiši ime i broj telefona.'; return; } if(!$('#ok').checked){ $('#sendMsg').textContent='Označi saglasnost da Goran vidi tvoje odgovore.'; return; }
   const r=analyze(), b=$('#sendBtn'); b.disabled=true; b.textContent='Šaljem…';
   try{ await CFG.submit({ime:nm,telefon:ph,grad:ct,termin:PRO.slot?slotLabel(PRO.slot):'',obrazac:r.pats.map(p=>p.t).join('; '),bol:`sada ${A.sad??'-'}/10, najgore ${A.max??'-'}/10`,ozbiljni_znakovi:r.red.join('; ')||'nema',rezultat:message(nm,ct),saglasnost:true});
-    PRO.saved=true; $('#sendBox').innerHTML=`<div class="okbox"><b>Prijava je poslana ✓</b><span>${PRO.slot?`Termin: ${slotLabel(PRO.slot)}. `:''}Javiću ti se na ${esc(ph)}.</span></div>`;
-  }catch(e){ $('#sendMsg').textContent='Slanje nije uspjelo. Probaj ponovo ili mi napiši poruku.'; b.disabled=false; b.textContent='Pošalji prijavu'; } }
+    PRO.saved=true;
+    const waTxt=message(nm,ct)+(PRO.slot?`\nTermin: ${slotLabel(PRO.slot)}`:'')+`\nTelefon: ${ph}`;
+    const waUrl=GORAN_WA?`https://wa.me/${GORAN_WA}?text=${encodeURIComponent(waTxt)}`:'';
+    $('#sendBox').innerHTML=`<div class="okbox"><b>Još samo jedan korak ✓</b><span>Otvara se WhatsApp sa tvojim rezultatom. Samo pritisni <b style="color:#fff">Pošalji</b>.</span>${waUrl?`<a class="btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px" href="${waUrl}">Otvori WhatsApp</a>`:''}</div>`;
+    if(waUrl) setTimeout(()=>{ location.href=waUrl; },700);
+  }catch(e){ $('#sendMsg').textContent='Slanje nije uspjelo. Probaj ponovo ili mi napiši poruku.'; b.disabled=false; b.textContent='Pošalji prijavu na WhatsApp'; } }
 // ---------- Goranove prijave (samo vlasnik) ----------
 function showInboxBtn(){ if($('#inboxBtn')) return; const b=document.createElement('button'); b.id='inboxBtn'; b.type='button'; b.className='inb'; b.textContent='Prijave'; b.onclick=openInbox; document.body.appendChild(b); }
 async function openInbox(){ let ov=$('#inbox'); if(!ov){ ov=document.createElement('div'); ov.id='inbox'; document.body.appendChild(ov); }
@@ -458,7 +462,7 @@ function result(){
       <label class="f" for="ph">Telefon (WhatsApp/Viber)<input type="text" id="ph" inputmode="tel" autocomplete="tel" placeholder="npr. 065 123 456"></label>
       <label class="f" for="ct">Grad (nije obavezno)<input type="text" id="ct" autocomplete="address-level2" placeholder="npr. Modriča"></label>
       <label class="okl"><input type="checkbox" id="ok"> Slažem se da Goran vidi moje odgovore i kontaktira me.</label>
-      <button class="btn" type="button" id="sendBtn">Pošalji prijavu</button><p class="small" id="sendMsg" role="status"></p></div>
+      <button class="btn" type="button" id="sendBtn">Pošalji prijavu na WhatsApp</button><p class="small" id="sendMsg" role="status"></p></div>
       <details class="alt"><summary class="small">Radije pošalji sam</summary><div id="send"></div></details></div>
     <p class="small">Test je edukativan i nije dijagnoza.</p><p class="credit">Anatomske slike: BodyParts3D © DBCLS, CC BY-SA 2.1 JP</p>
     <div class="row"><button class="btn ghost" id="again" type="button" style="flex:1">Uradi ponovo</button></div></div>`;
