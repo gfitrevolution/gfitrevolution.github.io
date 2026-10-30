@@ -1,0 +1,11 @@
+<!doctype html><html lang="bs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Test za bol u vratu · G Fit Revolution</title><meta name="description" content="Besplatan test za bol u vratu: 3D mapa bola, obrazac bola i 3 vježbe odmah.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="app.css"><style>body{margin:0;background:#0b0910}</style></head>
+<body><div class="gfx"><div class="wrap" id="app"></div></div>
+<script src="app.js"></script>
+<script>
+var WA='38766196464';
+GFitVrat({wa:WA,ig:'gfitrevolution',skin:'m/skin.txt',submit:function(d){ location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(d.rezultat+(d.termin?'\nTermin: '+d.termin:'')+'\nTelefon: '+d.telefon); return Promise.resolve(); }},
+ {i34:'img/34.webp',back:'img/back.webp',side:'img/side.webp',spine:'img/spine.webp'});
+</script></body></html>
