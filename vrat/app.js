@@ -451,7 +451,7 @@ function result(){
     ${r.red.length?`<div class="card glass"><p class="small" style="color:var(--ink)">Vježbe ti dam kad te pogledam uživo. Tako je najsigurnije za tebe.</p></div>`:`<div class="exl">${exCards(r)}</div>${r.avoid.map(a=>`<div class="avoid">${esc(a)}</div>`).join('')}<p class="small">Radi polako i bez pojačanja bola. Ako bol ili trnci rastu, stani.</p>`}
     <div class="card glass cta"><span class="ey">Sljedeći korak</span><h3>Ako želiš da te ovo što prije prođe</h3>
       <p class="small" style="color:var(--ink)">Zakaži svoj termin ili mi napiši poruku. Pogledam tvoj rezultat i složimo plan za tvoj vrat.</p>
-      <a class="btn ghost" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:12px" href="https://ig.me/m/${GORAN_IG}" target="_blank" rel="noopener">Napiši mi poruku</a>
+      <a class="btn ghost" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:12px" href="https://ig.me/m/${GORAN_IG}" target="_blank" rel="noopener" id="igMsg">Pošalji mi rezultat na Instagram</a><p class="small" style="margin:-4px 0 12px">Rezultat se sam kopira. U poruci samo pritisni i drži, pa <b style="color:#fff">Zalijepi</b> i pošalji.</p>
       <div id="book"></div>
       <div id="sendBox" class="stack2">
       <label class="f" for="nm">Ime<input type="text" id="nm" autocomplete="given-name" placeholder="npr. Ana"></label>
@@ -469,6 +469,7 @@ function result(){
     <p class="small">${GORAN_WA?'WhatsApp otvara poruku sa tvojim rezultatom. Samo pritisni pošalji.':'Kopiraj rezultat i zalijepi ga u poruku Goranu na Instagramu.'}</p><div class="msg" id="msg"></div>`;
   ['#nm','#ct'].forEach(q=>$(q).addEventListener('input',msgUpd)); msgUpd();
   $('#cp').onclick=async()=>{ const t=message($('#nm').value.trim(),$('#ct').value.trim()); try{ await navigator.clipboard.writeText(t); $('#cp').textContent='Kopirano ✓'; }catch(_){ const sl=getSelection(), rg=document.createRange(); rg.selectNodeContents($('#msg')); sl.removeAllRanges(); sl.addRange(rg); $('#cp').textContent='Označeno, kopiraj'; } };
+  document.querySelectorAll('a[href^="https://ig.me"]').forEach(a=>a.addEventListener('click',()=>{ const t=message(($('#nm')||{}).value||'',($('#ct')||{}).value||''); try{ navigator.clipboard.writeText(t); }catch(_){ } }));
   $('#again').onclick=()=>{ A={}; PRO.photos={}; PRO.ai=null; PRO.report=''; PRO.slot=null; step=-1; render(); window.scrollTo(0,0); };
   bookingHTML($('#book')); $('#sendBtn').onclick=submitLead;
 }
