@@ -3,7 +3,7 @@ function runTest(CFG, IMG){
 
 /* ===== POSTAVKE ===== */
 const GORAN_WA=(CFG.wa||'').replace(/[^0-9]/g,'');                 // npr. '38765123456'
-const GORAN_IG=CFG.ig||'gfitrevolution';
+const GORAN_IG=CFG.ig||'gfit.revolution';
 
 /* ---------- anatomija (SVG, pogled s leđa) ---------- */
 async function fetchModel(url){
