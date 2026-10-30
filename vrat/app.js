@@ -287,7 +287,7 @@ Podaci (JSON): ${JSON.stringify(data)}`;
 }
 // ---------- slanje prijave ----------
 async function submitLead(){ const nm=$('#nm').value.trim(), ph=$('#ph').value.trim(), ct=$('#ct').value.trim();
-  if(!nm||!ph){ $('#sendMsg').textContent='Upiši ime i broj telefona.'; return; } if(!$('#ok').checked){ $('#sendMsg').textContent='Označi saglasnost da Goran vidi tvoje odgovore.'; return; }
+  if(nm.length<2||ph.replace(/[^0-9]/g,'').length<8){ $('#sendMsg').textContent='Upiši ime i cijeli broj telefona (npr. 065 123 456), da ti se mogu javiti.'; return; } if(!$('#ok').checked){ $('#sendMsg').textContent='Označi saglasnost da Goran vidi tvoje odgovore.'; return; }
   const r=analyze(), b=$('#sendBtn'); b.disabled=true; b.textContent='Šaljem…';
   try{ await CFG.submit({ime:nm,telefon:ph,grad:ct,termin:PRO.slot?slotLabel(PRO.slot):'',obrazac:r.pats.map(p=>p.t).join('; '),bol:`sada ${A.sad??'-'}/10, najgore ${A.max??'-'}/10`,ozbiljni_znakovi:r.red.join('; ')||'nema',rezultat:message(nm,ct),saglasnost:true});
     PRO.saved=true;
